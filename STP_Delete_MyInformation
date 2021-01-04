@@ -1,0 +1,15 @@
+USE [MyInformation]
+GO
+/****** Object:  StoredProcedure [dbo].[STP_Delete_MyInformation]    Script Date: 04-01-2021 12:22:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure   [dbo].[STP_Delete_MyInformation] 
+(  
+   @Id int  
+)  
+as   
+begin  
+   Delete from [dbo].[MyInformation] where Id=@Id  
+End 
