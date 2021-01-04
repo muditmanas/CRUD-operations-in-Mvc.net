@@ -1,0 +1,22 @@
+USE [MyInformation]
+GO
+/****** Object:  StoredProcedure [dbo].[STP_UpdateTable_MyInformation]    Script Date: 04-01-2021 12:23:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure [dbo].[STP_UpdateTable_MyInformation] 
+(  
+   @Id int,  
+   @Name varchar (10),  
+   @DOB varchar (50),  
+   @Address varchar (50)  
+)  
+as  
+begin  
+   Update   [dbo].[MyInformation]
+   set Name=@Name,  
+   DOB=@DOB,  
+   Address=@Address  
+   where Id=@Id  
+End  
