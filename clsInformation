@@ -1,0 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Myinformationform.Models
+{
+    public class clsInformation
+    {
+        public int Id { get; set; }
+        public string Name { get; set;}
+        public string DOB { get; set; }
+        public string Address { get; set; }
+        public string flag { get; set; }
+    }
+}
