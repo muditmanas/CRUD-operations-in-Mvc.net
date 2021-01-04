@@ -1,0 +1,263 @@
+@model Myinformationform.Models.clsInformation
+
+@{
+    ViewBag.Title = "MyInformation";
+    //Layout =null;
+}
+
+<h2>MyInformation</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-horizontal">
+                 
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.HiddenFor(model => model.flag, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" id="btnsave" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-sm-1">
+                <div class="table table-bordered">
+                    <table style="background-color:black;color:white">
+                        <tr>
+                            <td>
+                                ID :
+                            </td>
+                            <td>
+                                <label id="lblID" ></label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Name :
+                            </td>
+                            <td>
+                                <label id="lblname"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DOB :
+                            </td>
+                            <td>
+                                <label id="lblDOB"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Address :
+                            </td>
+                            <td>
+                                <label id="lblAddress"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  
+  
+      <div>
+        <table class=" table table-bordered" id="tbldata">
+            <tr style="background-color:black;color:white">
+                <th class="text-center">
+                    Name
+                </th>
+                <th class="text-center">
+                    DOB
+                </th>
+                <th class="text-center">
+                    Address
+                </th>
+                <th class="text-center">
+                    Edit
+                </th>
+            </tr>
+        </table>
+    </div>
+
+
+}
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+
+        search();
+        $("#btnsave").click(function () {
+
+
+            var Name = $("#Name").val();
+            var DOB = $("#DOB").val();
+            if (Name == "") {
+
+                alert('Please fill the name');
+                $("#Name").focus();
+                return false;
+            }
+            else if (DOB == "") {
+                alert('Please fill the DOB');
+                $("#DOB").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+
+
+
+        });
+
+
+    });
+
+
+
+
+
+    function search() {
+        //call ajax
+        $.ajax({
+            type: "Post",
+            contentType: "Application/Json",
+            url: "@Url.Action("getData", "MyInformation")",
+            success: function (result) {
+                if (result == "1") {
+                    alert("record not found");
+                }
+                else {
+                    for (var i = 1; i < result.length; i++) {
+                        $("#tbldata").append('<tr><td class="text-center" id="Id'+i+'" hidden>'
+                            + result[i].Id + '</td><td class="text-center" id="name' + i + '">'
+                            + result[i].Name + '</td><td class="text-center" id="dob' + i +'">'
+                            + result[i].DOB + '</td><td class="text-center" id="address' + i +'">'
+                            + result[i].Address + '</th><td class="text-center"><input type="button" value="ViewID" onclick="fn_view(' + i + ')" id="btnview" class="col-offset-2 col-2" style="margin-left:10px" /><input type="button" value="Edit" onclick="fn_edit( ' + i + ' )" id="btnedit' + i + '" class="btn btn-primary" style="margin-left:10px" /><input type="submit" value="Delete" onclick="fn_delete( ' + i + ' )"id="btndelete' + i +'" class="btn btn-danger" style="margin-left:10px"/></td></tr>')
+                    }
+                }
+
+            }
+
+        })
+
+    }
+
+
+    function fn_view(i) {
+
+        
+        var _name = $("#tbldata #name" + i + "").text();
+        var _DOB = $("#tbldata #dob" + i + "").text();
+        var _Address = $("#tbldata #address" + i + "").text();
+
+        $("#lblID").text(i);
+        $("#lblname").text(_name);
+        $("#lblDOB").text(_DOB);
+        $("#lblAddress").text(_Address);
+       
+
+    }
+
+ function fn_edit(i) {
+     var Id = $("#tbldata #Id" + i + "").text();
+     var _name = $("#tbldata #name" + i + "").text();
+     var _DOB = $("#tbldata #dob" + i + "").text();
+     var _Address = $("#tbldata #address" + i + "").text();
+
+     $("#Name").val(_name);
+     $("#DOB").val(_DOB);
+     $("#Address").val(_Address);
+
+     $("#flag").val('U');
+     $("#Id").val(Id);
+     $("#btnsave").val('Update')
+
+
+        $("#btnsave").click(function () {
+
+
+            var Name = $("#Name").val();
+            var DOB = $("#DOB").val();
+            if (Name == "") {
+
+                alert('Please fill the name');
+                $("#Name").focus();
+                return false;
+            }
+            else if (DOB == "") {
+                alert('Please fill the DOB');
+                $("#DOB").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+
+
+
+        });
+
+    }
+    function fn_delete(i) {
+
+        var Id = $("#tbldata #Id" + i + "").text();
+        $("#Id").val(Id);
+        $("#flag").val('D');
+    }
+
+</script>
+
+@if (ViewBag.msg != null)
+{
+    <script>
+           $(document).ready(function () {
+
+               alert('@ViewBag.msg');
+
+           })
+    </script>
+}
