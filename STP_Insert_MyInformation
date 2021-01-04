@@ -1,0 +1,25 @@
+USE [MyInformation]
+GO
+/****** Object:  StoredProcedure [dbo].[STP_Insert_MyInformation]    Script Date: 04-01-2021 12:23:08 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+
+STP_Insert_MyInformation 'praveen','1990-10-10', 'dddd'
+
+*/
+
+ALTER procedure [dbo].[STP_Insert_MyInformation] 
+(  
+   @Name varchar (10),  
+   @DOB varchar(50),  
+   @Address varchar (50)  
+)  
+as  
+begin  
+   Insert into [dbo].[MyInformation] (Name,DOB,Address) values(@Name,@DOB,@Address)  
+End  
+
+
