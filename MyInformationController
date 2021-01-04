@@ -1,0 +1,83 @@
+using Myinformationform.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Myinformationform.Controllers
+{
+    public class MyInformationController : Controller
+    {
+        // GET: MyInformation
+
+        MyInformationEntities obj = new MyInformationEntities();
+        public ActionResult MyInformation()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MyInformation(clsInformation objclsInformation)
+        {
+            if(objclsInformation.flag == "U")
+            {
+                int i = obj.STP_UpdateTable_MyInformation(objclsInformation.Id, objclsInformation.Name, objclsInformation.DOB, objclsInformation.Address);
+                if (i > 0)
+                {
+                    ViewBag.msg = "record Updated successfully";
+                    ModelState.Clear();
+                }
+                else
+                {
+                    ViewBag.msg = "record not updated ";
+                }
+            }
+            else if(objclsInformation.flag == "D")
+            {
+                int i = obj.STP_Delete_MyInformation(objclsInformation.Id);
+                if (i > 0)
+                {
+                    ViewBag.msg = "record Deleted successfully";
+                    ModelState.Clear();
+                }
+                else
+                {
+                    ViewBag.msg = "record not deleted ";
+                }
+            }
+            else
+            {
+                int i = obj.STP_Insert_MyInformation(objclsInformation.Name, objclsInformation.DOB, objclsInformation.Address);
+                if (i > 0)
+                {
+                    ViewBag.msg = "record saved successfully";
+                    ModelState.Clear();
+                }
+                else
+                {
+                    ViewBag.msg = "record not saved ";
+                }
+            }
+
+            return View();
+        }
+
+       
+        public JsonResult getData()
+        {
+
+            List<STP_ViewTable_MyInformation_Result> list = new List<STP_ViewTable_MyInformation_Result>();
+            list = obj.STP_ViewTable_MyInformation("dd").ToList();
+            if(list.Count > 0)
+            {
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("1", JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+       
+    }
+}
