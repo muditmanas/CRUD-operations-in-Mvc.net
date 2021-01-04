@@ -1,0 +1,12 @@
+USE [MyInformation]
+GO
+/****** Object:  StoredProcedure [dbo].[STP_ViewTable_MyInformation]    Script Date: 04-01-2021 12:23:15 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER Procedure [dbo].[STP_ViewTable_MyInformation]
+as  
+begin  
+   select *from [dbo].[MyInformation]
+End
